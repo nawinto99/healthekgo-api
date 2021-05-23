@@ -2,7 +2,10 @@
 All of India's healthcare services and public data are available under one roof, with a single (EK) click and quick access to data. Healthcare Eco, single click, data quick 
 
 ## Demo
- <img src="./public/healthekgo-api-demo.gif" alt="profile"/>
+ [Video](https://github.com/nawinto99/healthekgo-api/blob/main/public/healthekgo-api-demo.mp4)
+ 
+ <img src="/public/healthekgo-api-demo.gif" alt="demo"/>
+ 
 - Logon to
 
   https://www.graphqlbin.com/v2/new
