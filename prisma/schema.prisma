@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Areas {
+  id           BigInt    @id @default(autoincrement())
+  pincode      BigInt
+  areaName     String
+  areaType     String
+  stateCode    BigInt
+  districtCode BigInt
+  cityCode     BigInt?
+  Cities       Cities?   @relation(fields: [cityCode], references: [cityCode])
+  Districts    Districts @relation(fields: [districtCode], references: [districtCode])
+  States       States    @relation(fields: [stateCode], references: [stateCode])
+
+  @@unique([pincode, areaName], name: "unq_pincode_areaName")
+}
+
+model Cities {
+  id           BigInt      @id @default(autoincrement())
+  cityCode     BigInt      @unique
+  cityName     String?
+  stateCode    BigInt?
+  districtCode BigInt?
+  Districts    Districts?  @relation(fields: [districtCode], references: [districtCode])
+  States       States?     @relation(fields: [stateCode], references: [stateCode])
+  Areas        Areas[]
+  Hospitals    Hospitals[]
+}
+
+model Districts {
+  id           BigInt      @id @default(autoincrement())
+  districtCode BigInt      @unique
+  districtName String?
+  stateCode    BigInt?
+  States       States?     @relation(fields: [stateCode], references: [stateCode])
+  Areas        Areas[]
+  Cities       Cities[]
+  Hospitals    Hospitals[]
+}
+
+model Hospitals {
+  id                           BigInt    @id @default(autoincrement())
+  hospitalCode                 BigInt
+  hospitalName                 String
+  stateCode                    BigInt
+  districtCode                 BigInt
+  pincode                      BigInt
+  hospitalDoctorsCount         BigInt?
+  hospitalTotalBeds            BigInt?
+  hospitalICUBeds              BigInt?
+  hospitalNormalBeds           BigInt?
+  hospitalAddress              String?
+  hospitalLatitude             Decimal?  @db.Decimal(11, 7)
+  hospitalLongitude            Decimal?  @db.Decimal(11, 7)
+  hospitalCategory             String?
+  hospitalCareType             String?
+  hospitalMedicineDiscipline   String?
+  hospitalTelephone            String?
+  hospitalMobileNumber         String?
+  hospitalEmergencyNumber      String?
+  hospitalAmbulancePhoneNumber String?
+  hospitalBloodbankPhoneNumber String?
+  hospitalTollfree             String?
+  hospitalHelpline             String?
+  hospitalFax                  String?
+  hospitalPrimaryEmailID       String?
+  hospitalSecondaryEmailID     String?
+  hospitalWebsite              String?
+  hospitalSpecialties          String?
+  hospitalFacilities           String?
+  cityCode                     BigInt?
+  Cities                       Cities?   @relation(fields: [cityCode], references: [cityCode])
+  Districts                    Districts @relation(fields: [districtCode], references: [districtCode])
+  States                       States    @relation(fields: [stateCode], references: [stateCode])
+}
+
+model States {
+  id        BigInt      @id @default(autoincrement())
+  stateCode BigInt      @unique
+  stateName String?
+  Areas     Areas[]
+  Cities    Cities[]
+  Districts Districts[]
+  Hospitals Hospitals[]
+}
